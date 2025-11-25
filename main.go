@@ -19,5 +19,7 @@ func main() {
 		fmt.Fprint(w, "hello world")
 	})
 
+	// callmsgback
+	http.HandleFunc("/bot/callback", service.CallbackMSg)
 	log.Fatal(http.ListenAndServe(":80", nil))
 }
