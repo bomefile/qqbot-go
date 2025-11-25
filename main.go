@@ -15,6 +15,9 @@ func main() {
 
 	http.HandleFunc("/", service.IndexHandler)
 	http.HandleFunc("/api/count", service.CounterHandler)
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "hello world")
+	})
 
 	log.Fatal(http.ListenAndServe(":80", nil))
 }
