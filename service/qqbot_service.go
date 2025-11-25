@@ -35,7 +35,26 @@ type ValidationResponse struct {
 var botSecret = "ayMk8XwLk9YxNnDd3TtKlCd4VwNpHjBd"
 
 func CallbackMSg(rw http.ResponseWriter, r *http.Request) {
+	log.Println("callback start", "method=", r.Method, "path=", r.URL.Path, "remote=", r.RemoteAddr)
+	ct := r.Header.Get("Content-Type")
+	if ct != "" {
+		log.Println("content-type", ct)
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println("callback read body err", err)
+		http.Error(rw, "bad request", http.StatusBadRequest)
+		return
+	}
+	var p Payload
+	if err := json.Unmarshal(body, &p); err != nil {
+		log.Println("callback unmarshal payload err", err)
+	} else {
+		log.Printf("payload id=%s op=%d t=%s s=%d", p.ID, p.Op, p.EventName, p.Sequence)
+	}
+	r.Body = io.NopCloser(bytes.NewReader(body))
 	HandleValidation(rw, r, botSecret)
+	log.Println("callback end", "method=", r.Method, "path=", r.URL.Path)
 }
 
 func HandleValidation(rw http.ResponseWriter, r *http.Request, botSecret string) {
