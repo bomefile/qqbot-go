@@ -13,6 +13,8 @@ func main() {
 		panic(fmt.Sprintf("mysql init failed with %+v", err))
 	}
 
+	_ = service.InitQQTokenFromEnv()
+
 	http.HandleFunc("/", service.IndexHandler)
 	http.HandleFunc("/api/count", service.CounterHandler)
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {

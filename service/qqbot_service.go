@@ -2,9 +2,11 @@ package service
 
 import (
 	"bytes"
+	"context"
 	"crypto/ed25519"
 	"encoding/hex"
 	"encoding/json"
+	"github.com/tencent-connect/botgo/token"
 	"io"
 	"log"
 	"net/http"
@@ -55,6 +57,20 @@ func CallbackMSg(rw http.ResponseWriter, r *http.Request) {
 	r.Body = io.NopCloser(bytes.NewReader(body))
 	HandleValidation(rw, r, botSecret)
 	log.Println("callback end", "method=", r.Method, "path=", r.URL.Path)
+}
+
+// InitQQTokenFromEnv 使用 botgo 的 token_source 初始化并自动刷新
+func InitQQTokenFromEnv() error {
+	appID := "102816513"
+	appSecret := botSecret
+
+	ts := token.NewQQBotTokenSource(&token.QQBotCredentials{AppID: appID, AppSecret: appSecret})
+	if err := token.StartRefreshAccessToken(context.Background(), ts); err != nil {
+		log.Println("start refresh access token failed:", err)
+		return err
+	}
+	log.Println("qq token refresh started")
+	return nil
 }
 
 func HandleValidation(rw http.ResponseWriter, r *http.Request, botSecret string) {
