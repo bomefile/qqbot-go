@@ -5,6 +5,12 @@ FROM golang:1.22-alpine AS builder
 # 指定构建过程中的工作目录
 WORKDIR /app
 
+ENV CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+# 换国内代理（阿里云又快又稳）
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下（.dockerignore中文件除外）
 COPY . /app/
 
