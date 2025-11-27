@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  go-app:
+    build:
+      context: .          # 当前目录构建镜像
+      dockerfile: Dockerfile
+    container_name: go-app
+    ports:
+      - "8080:8080"       # 将 ECS 8080 映射到容器 8080
+    restart: always
+    environment:
+      ENV: prod
