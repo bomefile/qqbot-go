@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 # ======================================================
 # 2) 运行阶段：使用轻量级 Alpine 镜像
 # ======================================================
-FROM alpine:3.19
+FROM alpine:3.13
 
 WORKDIR /app
 
