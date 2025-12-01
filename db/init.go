@@ -19,9 +19,9 @@ func Init() error {
 	//pwd := os.Getenv("MYSQL_PASSWORD")
 	//addr := os.Getenv("MYSQL_ADDRESS")
 	//dataBase := os.Getenv("MYSQL_DATABASE")
-	user := "root"
+	user := "admin"
 	pwd := "admin"
-	addr := "172.17.0.1"
+	addr := "172.0.0.1"
 	dataBase := "qqbot"
 
 	if dataBase == "" {
