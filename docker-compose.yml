@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   mysql:
@@ -8,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -28,8 +27,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      MYSQL_USERNAME: ${MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USERNAME: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ADDRESS: ${MYSQL_ADDRESS}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       QQ_APP_ID: ${QQ_APP_ID}
