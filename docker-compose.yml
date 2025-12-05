@@ -22,14 +22,14 @@ services:
   qqbot:
     container_name: qqbot-go
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
       MYSQL_USERNAME: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_ADDRESS: ${MYSQL_ADDRESS}
+      MYSQL_ADDRESS: mysql:3306
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       QQ_APP_ID: ${QQ_APP_ID}
       QQ_APP_SECRET: ${QQ_APP_SECRET}
