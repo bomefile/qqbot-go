@@ -23,5 +23,9 @@ func main() {
 
 	// callmsgback
 	http.HandleFunc("/bot/callback", service.CallbackMSg)
+
+	baseURL := "http://localhost:8080"
+	log.Println("server starting", baseURL)
+	log.Println("serve", baseURL+"/", baseURL+"/hello", baseURL+"/api/count", baseURL+"/bot/callback")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

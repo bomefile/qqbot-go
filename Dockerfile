@@ -16,15 +16,27 @@ RUN go mod download
 COPY . .
 
 # 编译为 Linux 可执行文件
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags "-s -w" -o main .
 
 # ======================================================
 # 2) 运行阶段：使用轻量级 Alpine 镜像
 # ======================================================
-FROM alpine:3.13
+FROM alpine:3.18
 
 WORKDIR /app
 
+# 基础运行环境（证书、时区），保证 HTTPS 能正常访问
+RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
+
 COPY --from=builder /app/main .
+# 业务静态资源（主页）
+COPY index.html ./index.html
+
+# 以非 root 运行，提升安全性
+RUN adduser -D -u 10001 appuser
+USER appuser
+
+# 暴露服务端口
+EXPOSE 80
 
 CMD ["./main"]

@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -13,16 +14,24 @@ var dbInstance *gorm.DB
 
 // Init 初始化数据库
 func Init() error {
+	source := "%s:%s@tcp(%s)/%s?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&parseTime=true"
+	user := os.Getenv("MYSQL_USERNAME")
+	pwd := os.Getenv("MYSQL_PASSWORD")
+	addr := os.Getenv("MYSQL_ADDRESS")
+	dataBase := os.Getenv("MYSQL_DATABASE")
 
-	source := "%s:%s@tcp(%s)/%s?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&&parseTime=true"
-	//user := os.Getenv("MYSQL_USERNAME")
-	//pwd := os.Getenv("MYSQL_PASSWORD")
-	//addr := os.Getenv("MYSQL_ADDRESS")
-	//dataBase := os.Getenv("MYSQL_DATABASE")
-	user := "admin"
-	pwd := "admin"
-	addr := "172.0.0.1"
-	dataBase := "qqbot"
+	if user == "" {
+		user = "admin"
+	}
+	if pwd == "" {
+		pwd = "admin"
+	}
+	if addr == "" {
+		addr = "127.0.0.1:3306"
+	}
+	if dataBase == "" {
+		dataBase = "golang_demo"
+	}
 
 	if dataBase == "" {
 		dataBase = "golang_demo"
