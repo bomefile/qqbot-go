@@ -23,12 +23,10 @@ RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates \
 # 2) 运行阶段：使用 scratch，避免拉取运行时基础镜像
 #    从构建阶段拷贝证书与可执行文件
 # ======================================================
-FROM scratch
+FROM alpine:3.13
 
 WORKDIR /app
 
-# 加入 busybox（提供 sh）
-COPY --from=alpine /bin/busybox /bin/busybox
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
