@@ -27,5 +27,5 @@ func main() {
 	baseURL := "http://localhost:8080"
 	log.Println("server starting", baseURL)
 	log.Println("serve", baseURL+"/", baseURL+"/hello", baseURL+"/api/count", baseURL+"/bot/callback")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
 }
