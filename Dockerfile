@@ -2,7 +2,7 @@
 # 1) 构建阶段：使用镜像加速源的 golang alpine 构建二进制
 #    使用腾讯云公共镜像加速，规避 dockerhub 访问超时
 # ======================================================
-FROM ccr.ccs.tencentyun.com/library/golang:1.22-alpine AS builder
+FROM golang:1.22-alpine AS builder
 
 # 使用国内代理提高构建速度（可选）
 ENV GOPROXY=https://goproxy.cn,direct
