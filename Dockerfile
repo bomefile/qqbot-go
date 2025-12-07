@@ -27,6 +27,9 @@ FROM scratch
 
 WORKDIR /app
 
+# 加入 busybox（提供 sh）
+COPY --from=alpine /bin/busybox /bin/busybox
+
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /app/main /app/main
