@@ -1,7 +1,8 @@
 # ======================================================
-# 1) 构建阶段：使用 Go 官方镜像构建二进制
+# 1) 构建阶段：使用镜像加速源的 golang alpine 构建二进制
+#    使用腾讯云公共镜像加速，规避 dockerhub 访问超时
 # ======================================================
-FROM golang:1.22-alpine AS builder
+FROM ccr.ccs.tencentyun.com/library/golang:1.22-alpine AS builder
 
 # 使用国内代理提高构建速度（可选）
 ENV GOPROXY=https://goproxy.cn,direct
@@ -15,28 +16,25 @@ RUN go mod download
 # 再复制源代码
 COPY . .
 
-# 编译为 Linux 可执行文件
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags "-s -w" -o main .
+RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates \
+    && CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags "-s -w" -o main .
 
 # ======================================================
-# 2) 运行阶段：使用轻量级 Alpine 镜像
+# 2) 运行阶段：使用 scratch，避免拉取运行时基础镜像
+#    从构建阶段拷贝证书与可执行文件
 # ======================================================
-FROM alpine:3.18
+FROM scratch
 
 WORKDIR /app
 
-# 基础运行环境（证书、时区），保证 HTTPS 能正常访问
-RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
-
-COPY --from=builder /app/main .
-# 业务静态资源（主页）
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /app/main /app/main
 COPY index.html ./index.html
 
-# 以非 root 运行，提升安全性
-RUN adduser -D -u 10001 appuser
-USER appuser
+# 以非特权用户运行（直接设置 uid），避免 80 端口权限问题，应用监听 8080
+USER 10001
 
-# 暴露服务端口
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["./main"]
+ENTRYPOINT ["/app/main"]
