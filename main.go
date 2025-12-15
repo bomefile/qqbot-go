@@ -17,6 +17,10 @@ func main() {
 
 	http.HandleFunc("/", service.IndexHandler)
 	http.HandleFunc("/api/count", service.CounterHandler)
+	http.HandleFunc("/api/user_record", service.UserRecordHandler)
+	http.HandleFunc("/api/user_record/add", service.UserRecordAddHandler)
+	http.HandleFunc("/api/user_record/update", service.UserRecordUpdateHandler)
+	http.HandleFunc("/api/user_record/checkin", service.UserRecordCheckinHandler)
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "hello world")
 	})

@@ -27,15 +27,12 @@ func Init() error {
 		pwd = "admin"
 	}
 	if addr == "" {
-		addr = "127.0.0.1:3306"
+		addr = "8.140.17.9:3306"
 	}
 	if dataBase == "" {
-		dataBase = "golang_demo"
+		dataBase = "testdb"
 	}
 
-	if dataBase == "" {
-		dataBase = "golang_demo"
-	}
 	source = fmt.Sprintf(source, user, pwd, addr, dataBase)
 	fmt.Println("start init mysql with ", source)
 
