@@ -4,16 +4,21 @@
 # ======================================================
 FROM golang:1.22-alpine AS builder
 
+# 1. 换源（最先）
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' \
+    /etc/apk/repositories \
+ && apk add --no-cache ca-certificates tzdata \
+ && update-ca-certificates
+
 # 使用国内代理提高构建速度（可选）
 ENV GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /app
 
-RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
-
+COPY go.mod go.sum ./
 # 先复制 go.mod / go.sum，加速缓存
 RUN --mount=type=cache,target=/go/pkg/mod \
-    go mod download
+go mod download
 
 # 再复制源代码
 COPY . .
