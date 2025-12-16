@@ -9,15 +9,18 @@ ENV GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /app
 
+RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
+
 # 先复制 go.mod / go.sum，加速缓存
-COPY go.mod go.sum ./
-RUN go mod download
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod download
 
 # 再复制源代码
 COPY . .
 
-RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates \
-    && CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags "-s -w" -o main .
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=linux \
+    go build -trimpath -ldflags "-s -w" -o main .
 
 # ======================================================
 # 2) 运行阶段：使用 scratch，避免拉取运行时基础镜像
