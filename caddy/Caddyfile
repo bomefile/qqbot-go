@@ -1,10 +1,6 @@
-qq.xiaochengzi.me {
-    encode gzip
-    log {
-        output stdout
-        format console
-    }
-    reverse_proxy qqbot:8080
+{
+    acme_ca https://acme-v02.api.letsencrypt.org/directory
+    email cn.wangliangliang@gmail.com
 }
 
 qq.songjunya.xyz {
