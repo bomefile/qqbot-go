@@ -1,0 +1,8 @@
+qq.xiaochengzi.me {
+    encode gzip
+    log {
+        output stdout
+        format console
+    }
+    reverse_proxy qqbot:8080
+}
