@@ -6,3 +6,12 @@ qq.xiaochengzi.me {
     }
     reverse_proxy qqbot:8080
 }
+
+qq.songjunya.xyz {
+    encode gzip
+    log {
+        output stdout
+        format console
+    }
+    reverse_proxy qqbot:8080
+}
