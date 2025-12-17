@@ -25,3 +25,19 @@ CREATE TABLE `user_show_view_0` (
 PRIMARY KEY (`id`),
 KEY `idx_uid_view_time` (`uid`,`view_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='俱乐部信息表';
+
+
+{
+acme_ca https://acme-v02.api.letsencrypt.org/directory
+email cn.wangliangliang@gmail.com
+auto_https off
+}
+
+https://8.140.17.9 {
+encode gzip
+log {
+output stdout
+format console
+}
+reverse_proxy qqbot:8080
+}
