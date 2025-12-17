@@ -1,8 +1,9 @@
 {
-    auto_https off
+    acme_ca https://acme-v02.api.letsencrypt.org/directory
+    email cn.wangliangliang@gmail.com
 }
 
-https://8.140.17.9 {
+qq.songjunya.xyz {
     encode gzip
     log {
         output stdout
