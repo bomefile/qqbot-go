@@ -4,6 +4,23 @@
 }
 
 qq.pplove.xyz {
+    # 1. 显式阻止敏感文件和目录的访问
+    # 匹配以点开头的隐藏文件，或者常见的开发工具配置目录
+    @forbidden {
+        path /.env* /.git* /.vscode* /.ds_store* /composer.json* /package.json*
+    }
+    respond @forbidden "Access Denied" 403
+
+    # 2. 阻止常见的攻击扫描路径
+    @scan_bot {
+        path /actuator/* /wp-admin/* /xmlrpc.php /server-status /_all_dbs /swagger* /v2/api-docs
+    }
+    respond @scan_bot "Not Found" 404
+
+    # 3. 静态资源处理
+    root * /usr/share/caddy  # 这里的路径需对应你容器内的网页根目录
+    file_server
+
     encode gzip
     log {
         output stdout
