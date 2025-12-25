@@ -52,7 +52,7 @@ func CallbackMSg(rw http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(body, &p); err != nil {
 		log.Println("callback unmarshal payload err", err)
 	} else {
-		log.Printf("payload id=%s op=%d t=%s s=%d", p.ID, p.Op, p.EventName, p.Sequence)
+		log.Printf("payload id=%s op=%d t=%s s=%d d=%s", p.ID, p.Op, p.EventName, p.Sequence, p.Data)
 	}
 	r.Body = io.NopCloser(bytes.NewReader(body))
 	HandleValidation(rw, r, botSecret)
