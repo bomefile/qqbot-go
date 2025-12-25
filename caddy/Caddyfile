@@ -3,7 +3,7 @@
     email cn.wangliangliang@gmail.com
 }
 
-qq.songjunya.xyz {
+qq.pplove.xyz {
     encode gzip
     log {
         output stdout
